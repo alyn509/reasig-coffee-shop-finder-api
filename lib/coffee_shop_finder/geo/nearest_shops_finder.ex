@@ -1,4 +1,7 @@
 defmodule CoffeeShopFinder.Geo.NearestShopsFinder do
+  @moduledoc """
+  Finds the nearest coffee shops to a given coordinate.
+  """
   alias CoffeeShopFinder.Geo.DistanceCalculator
 
   def find(shops, user_x, user_y, k \\ 3) do

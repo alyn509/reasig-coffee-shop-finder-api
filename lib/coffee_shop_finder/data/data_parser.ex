@@ -1,4 +1,8 @@
 defmodule CoffeeShopFinder.Data.DataParser do
+  @moduledoc """
+  Parses and validates the fetched data.
+  """
+
   alias CoffeeShopFinder.Geo.CoordinateValidator
 
   def parse(rows) when is_list(rows) do

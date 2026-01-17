@@ -1,4 +1,7 @@
 defmodule CoffeeShopFinder.Geo.CoordinateValidator do
+  @moduledoc """
+  Validates coordinates.
+  """
   @min -180
   @max 180
 

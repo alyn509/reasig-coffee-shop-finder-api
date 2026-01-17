@@ -1,4 +1,7 @@
 defmodule CoffeeShopFinder.Data.DataStore do
+  @moduledoc """
+  In-memory store for coffee shop data and sets up a periodic refresh.
+  """
   use GenServer
 
   require Logger

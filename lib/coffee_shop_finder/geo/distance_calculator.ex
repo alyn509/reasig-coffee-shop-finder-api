@@ -1,4 +1,7 @@
 defmodule CoffeeShopFinder.Geo.DistanceCalculator do
+  @moduledoc """
+  Calculates the Euclidean distance between two points.
+  """
   def euclidean(x1, y1, x2, y2)
       when is_number(x1) and is_number(y1) and
              is_number(x2) and is_number(y2) do
