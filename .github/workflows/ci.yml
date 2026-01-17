@@ -41,7 +41,11 @@ jobs:
 
       - name: Run tests
         run: mix test
-        
+
+  check_csv_url_is_set:
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Verify CSV URL is present
         run: |
           test -n "$COFFEE_SHOPS_CSV_URL"
