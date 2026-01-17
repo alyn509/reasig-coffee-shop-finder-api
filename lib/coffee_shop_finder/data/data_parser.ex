@@ -1,5 +1,5 @@
-defmodule CoffeeShopFinder.DataParser do
-  alias CoffeeShopFinder.CoordinateValidator
+defmodule CoffeeShopFinder.Data.DataParser do
+  alias CoffeeShopFinder.Geo.CoordinateValidator
 
   def parse(rows) when is_list(rows) do
     rows

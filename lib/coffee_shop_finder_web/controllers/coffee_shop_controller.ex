@@ -1,7 +1,7 @@
 defmodule CoffeeShopFinderWeb.CoffeeShopController do
   use CoffeeShopFinderWeb, :controller
 
-  alias CoffeeShopFinder.{DataStore, NearestShopsFinder, CoordinateValidator}
+  alias CoffeeShopFinder.{Data.DataStore, Geo.NearestShopsFinder, Geo.CoordinateValidator}
 
   def nearest(conn, %{"x" => x, "y" => y}) do
   with {:ok, x} <- CoordinateValidator.parse(x),

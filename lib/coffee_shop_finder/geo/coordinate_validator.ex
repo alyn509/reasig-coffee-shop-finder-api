@@ -1,4 +1,4 @@
-defmodule CoffeeShopFinder.CoordinateValidator do
+defmodule CoffeeShopFinder.Geo.CoordinateValidator do
   @min -180
   @max 180
 

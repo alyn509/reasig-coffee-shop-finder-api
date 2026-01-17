@@ -16,7 +16,7 @@ defmodule CoffeeShopFinder.Application do
       # {CoffeeShopFinder.Worker, arg},
       # Start to serve requests, typically the last entry
       CoffeeShopFinderWeb.Endpoint,
-      CoffeeShopFinder.DataStore
+      CoffeeShopFinder.Data.DataStore
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -1,9 +1,9 @@
-defmodule CoffeeShopFinder.DataStore do
+defmodule CoffeeShopFinder.Data.DataStore do
   use GenServer
 
   require Logger
 
-  alias CoffeeShopFinder.{DataFetcher, DataParser}
+  alias CoffeeShopFinder.Data.{DataFetcher, DataParser}
 
   @refresh_interval :timer.minutes(10)
 

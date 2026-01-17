@@ -1,4 +1,4 @@
-defmodule CoffeeShopFinder.DistanceCalculator do
+defmodule CoffeeShopFinder.Geo.DistanceCalculator do
   def euclidean(x1, y1, x2, y2)
       when is_number(x1) and is_number(y1)
       and is_number(x2) and is_number(y2) do

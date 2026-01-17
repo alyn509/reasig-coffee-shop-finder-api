@@ -1,5 +1,5 @@
-defmodule CoffeeShopFinder.NearestShopsFinder do
-  alias CoffeeShopFinder.DistanceCalculator
+defmodule CoffeeShopFinder.Geo.NearestShopsFinder do
+  alias CoffeeShopFinder.Geo.DistanceCalculator
 
   def find(shops, user_x, user_y, k \\ 3) do
     Enum.reduce(shops, [], fn shop, acc ->

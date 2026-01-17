@@ -1,4 +1,4 @@
-defmodule CoffeeShopFinder.DataFetcher do
+defmodule CoffeeShopFinder.Data.DataFetcher do
   @moduledoc """
   Fetches the coffee shops CSV from the configured remote URL.
   """
