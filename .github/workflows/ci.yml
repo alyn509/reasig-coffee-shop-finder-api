@@ -47,6 +47,14 @@ jobs:
       - name: Run tests
         run: mix test
 
+  credo:
+    requires: compilation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run credo
+        run: mix credo
+
   check_csv_url_is_set:
     runs-on: ubuntu-latest
 
@@ -54,11 +62,3 @@ jobs:
       - name: Verify CSV URL is present
         run: |
           test -n "$COFFEE_SHOPS_CSV_URL"
-
-  credo:
-    requires: compilation
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Run tests
-        run: mix credo
