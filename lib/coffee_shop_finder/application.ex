@@ -15,7 +15,8 @@ defmodule CoffeeShopFinder.Application do
       # Start a worker by calling: CoffeeShopFinder.Worker.start_link(arg)
       # {CoffeeShopFinder.Worker, arg},
       # Start to serve requests, typically the last entry
-      CoffeeShopFinderWeb.Endpoint
+      CoffeeShopFinderWeb.Endpoint,
+      CoffeeShopFinder.DataStore
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

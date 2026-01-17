@@ -20,6 +20,12 @@ defmodule CoffeeShopFinderWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/api", CoffeeShopFinderWeb do
+    pipe_through :api
+
+    get "/coffee-shops/nearest", CoffeeShopController, :nearest
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", CoffeeShopFinderWeb do
   #   pipe_through :api
