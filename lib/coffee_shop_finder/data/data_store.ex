@@ -40,8 +40,10 @@ defmodule CoffeeShopFinder.Data.DataStore do
   def handle_cast(:refresh, state) do
     new_state =
       case load_shops() do
-        %{shops: shops} = s when shops != [] -> s  # successful load
-          _ -> state  # keep old data if refresh fails
+        # successful load
+        %{shops: shops} = s when shops != [] -> s
+        # keep old data if refresh fails
+        _ -> state
       end
 
     {:noreply, new_state}

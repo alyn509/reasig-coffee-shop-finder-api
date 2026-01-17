@@ -4,9 +4,8 @@ defmodule CoffeeShopFinderWeb.CoffeeShopController do
   alias CoffeeShopFinder.{Data.DataStore, Geo.NearestShopsFinder, Geo.CoordinateValidator}
 
   def nearest(conn, %{"x" => x, "y" => y}) do
-  with {:ok, x} <- CoordinateValidator.parse(x),
-       {:ok, y} <- CoordinateValidator.parse(y) do
-
+    with {:ok, x} <- CoordinateValidator.parse(x),
+         {:ok, y} <- CoordinateValidator.parse(y) do
       shops = DataStore.all()
 
       result =
@@ -21,5 +20,4 @@ defmodule CoffeeShopFinderWeb.CoffeeShopController do
         |> json(%{error: "Invalid coordinates"})
     end
   end
-
 end

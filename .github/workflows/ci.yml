@@ -10,7 +10,7 @@ env:
   COFFEE_SHOPS_CSV_URL: ${{ secrets.COFFEE_SHOPS_CSV_URL }}
 
 jobs:
-  test:
+  compilation:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +39,11 @@ jobs:
       - name: Compile (warnings as errors)
         run: mix compile --warnings-as-errors
 
+  tests:
+    requires: compilation
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Run tests
         run: mix test
 
@@ -49,3 +54,11 @@ jobs:
       - name: Verify CSV URL is present
         run: |
           test -n "$COFFEE_SHOPS_CSV_URL"
+
+  credo:
+    requires: compilation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run tests
+        run: mix credo

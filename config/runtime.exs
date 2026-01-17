@@ -101,7 +101,6 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 
-
   # Require CSV URL from environment (production-only secret)
   # Fails immediately if missing
 end

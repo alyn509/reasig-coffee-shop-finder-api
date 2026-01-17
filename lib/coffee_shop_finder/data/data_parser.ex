@@ -26,7 +26,7 @@ defmodule CoffeeShopFinder.Data.DataParser do
 
   defp parse_row([name, x, y]) do
     with {:ok, x} <- CoordinateValidator.parse(x),
-        {:ok, y} <- CoordinateValidator.parse(y) do
+         {:ok, y} <- CoordinateValidator.parse(y) do
       {:ok, %{name: name, x: x, y: y}}
     else
       _ -> {:error, :invalid_row}
@@ -34,6 +34,4 @@ defmodule CoffeeShopFinder.Data.DataParser do
   end
 
   defp parse_row(_), do: {:error, :invalid_format}
-
-
 end
