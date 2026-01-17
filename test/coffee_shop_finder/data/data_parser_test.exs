@@ -25,6 +25,27 @@ defmodule CoffeeShopFinder.DataParserTest do
     assert length(shops) == 1
   end
 
+  test "skips rows with incomplete data" do
+    rows = [
+      ["Shop A", "1.0", "2.0"],
+      ["Incomplete", "4.2"],
+      ["Also Incomplete"]
+    ]
+
+    shops = DataParser.parse(rows)
+    assert length(shops) == 1
+  end
+
+  test "skip rows with extra data" do
+    rows = [
+      ["Shop A", "1.0", "2.0"],
+      ["Extra", "4.2", "5.3", "potato"]
+    ]
+
+    shops = DataParser.parse(rows)
+    assert length(shops) == 1
+  end
+
   test "deduplicates shops" do
     rows = [
       ["Shop A", "1.0", "2.0"],
