@@ -25,7 +25,7 @@ these coffee shops:
 # Running the application locally
 ### Prerequisites
 - Elixir `~> 1.17`
-- Erlang/OTP compatible with Elixir are rebuilt)
+- Erlang/OTP compatible with Elixir
 > This project is an API-only Phoenix application and does not require Node.js or any frontend tooling.
 
 ### Environment variables
