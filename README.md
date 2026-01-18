@@ -21,3 +21,75 @@ these coffee shops:
 * Starbucks Seattle2
 * Starbucks Seattle
 * Starbucks SF
+
+# Running the application locally
+### Prerequisites
+- Elixir `~> 1.17`
+- Erlang/OTP compatible with Elixir are rebuilt)
+> This project is an API-only Phoenix application and does not require Node.js or any frontend tooling.
+
+### Environment variables
+
+The application requires the following environment variable to be set:
+
+``` 
+export COFFEE_SHOPS_CSV_URL=https://static.reasig.ro/interview/coffee_shops_exerceise/coffee_shops.csv
+```
+
+### Setup and start
+
+```
+mix deps.get
+mix phx.server
+```
+
+The server will start on:
+
+```
+http://localhost:4000 
+```
+
+### Example request
+
+```
+curl "http://localhost:4000/api/coffee-shops/nearest?x=47.58&y=-122.32"
+```
+
+### Example response
+
+```
+{
+  "results": [
+    {
+      "name": "Starbucks Seattle",
+      "y": -122.316,
+      "x": 47.5809,
+      "distance": 0.0041
+    },
+    {
+      "name": "Starbucks Seattle2",
+      "y": -122.3368,
+      "x": 47.5869,
+      "distance": 0.0182
+    },
+    {
+      "name": "Starbucks SF",
+      "y": -122.334,
+      "x": 37.5209,
+      "distance": 10.0591
+    }
+  ]
+}
+```
+
+### Running tests
+
+```
+mix test
+```
+
+### Notes
+
+- Coffee shop data is loaded at startup and refreshed periodically in memory
+- The application will fail fast on startup if `COFFEE_SHOPS_CSV_URL` is missing or invalid
+- CI is configured via GitHub Actions to run tests on each push and pull request
