@@ -8,7 +8,7 @@ defmodule CoffeeShopFinder.Data.DataStore do
 
   alias CoffeeShopFinder.Data.{DataFetcher, DataParser}
 
-  @refresh_interval :timer.minutes(10)
+  @refresh_interval :timer.hours(24)
 
   # Public API
 
