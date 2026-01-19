@@ -5,11 +5,20 @@ defmodule CoffeeShopFinder.Data.DataParser do
 
   alias CoffeeShopFinder.Geo.CoordinateValidator
 
+  @min_no_of_valid_shops 2
+
   def parse(rows) when is_list(rows) do
-    rows
-    |> Enum.reduce({MapSet.new(), []}, &dedupe_and_parse/2)
-    |> elem(1)
-    |> Enum.reverse()
+    parsed =
+      rows
+      |> Enum.reduce({MapSet.new(), []}, &dedupe_and_parse/2)
+      |> elem(1)
+      |> Enum.reverse()
+
+    if length(parsed) >= @min_no_of_valid_shops do
+      {:ok, parsed}
+    else
+      {:error, :not_enough_rows}
+    end
   end
 
   defp dedupe_and_parse(row, {seen, acc}) do
