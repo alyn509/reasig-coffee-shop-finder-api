@@ -1,4 +1,8 @@
 defmodule CoffeeShopFinder.Constants do
+  @moduledoc """
+  Application-wide constants.
+  """
+
   # Minimum number of valid shops required to consider data load successful
   @min_no_of_valid_shops 2
 
