@@ -4,8 +4,7 @@ defmodule CoffeeShopFinder.Data.DataParser do
   """
 
   alias CoffeeShopFinder.Geo.CoordinateValidator
-
-  @min_no_of_valid_shops 2
+  alias CoffeeShopFinder.Constants
 
   def parse(rows) when is_list(rows) do
     parsed =
@@ -14,7 +13,7 @@ defmodule CoffeeShopFinder.Data.DataParser do
       |> elem(1)
       |> Enum.reverse()
 
-    if length(parsed) >= @min_no_of_valid_shops do
+    if length(parsed) >= Constants.min_no_of_valid_shops() do
       {:ok, parsed}
     else
       {:error, :not_enough_rows}

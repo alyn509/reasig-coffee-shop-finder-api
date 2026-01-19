@@ -2,8 +2,8 @@ defmodule CoffeeShopFinder.Geo.CoordinateValidator do
   @moduledoc """
   Validates coordinates.
   """
-  @min -180
-  @max 180
+
+  alias CoffeeShopFinder.Constants
 
   def parse(value) when is_binary(value) do
     case Float.parse(value) do
@@ -16,9 +16,12 @@ defmodule CoffeeShopFinder.Geo.CoordinateValidator do
     validate(value)
   end
 
-  defp validate(value) when value >= @min and value <= @max do
-    {:ok, value}
+  defp validate(value) do
+    if value >= Constants.min_coordinate_limit() and
+         value <= Constants.max_coordinate_limit() do
+      {:ok, value}
+    else
+      {:error, :out_of_range}
+    end
   end
-
-  defp validate(_), do: {:error, :out_of_range}
 end

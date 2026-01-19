@@ -7,8 +7,7 @@ defmodule CoffeeShopFinder.Data.DataStore do
   require Logger
 
   alias CoffeeShopFinder.Data.{DataFetcher, DataParser}
-
-  @refresh_interval :timer.hours(24)
+  alias CoffeeShopFinder.Constants
 
   # Public API
 
@@ -62,7 +61,7 @@ defmodule CoffeeShopFinder.Data.DataStore do
   # Private helpers
 
   defp schedule_refresh do
-    Process.send_after(self(), :refresh, @refresh_interval)
+    Process.send_after(self(), :refresh, Constants.refresh_interval())
   end
 
   defp load_shops do
