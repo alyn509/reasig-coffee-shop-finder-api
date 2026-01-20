@@ -30,7 +30,13 @@ defmodule CoffeeShopFinder.Data.DataStore do
     # Load initial shops safely
     state = load_shops()
     schedule_refresh()
-    {:ok, state}
+
+    if state.shops == [] do
+      {:stop, :no_initial_data}
+    else
+      schedule_refresh()
+      {:ok, state}
+    end
   end
 
   @impl true
