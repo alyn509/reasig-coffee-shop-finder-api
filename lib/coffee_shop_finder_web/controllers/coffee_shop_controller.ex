@@ -27,9 +27,16 @@ defmodule CoffeeShopFinderWeb.CoffeeShopController do
   # Private helpers
 
   defp run_nearest(conn, x, y) do
-    shops = DataStore.all()
-    result = NearestShopsFinder.find(shops, x, y)
-    json(conn, %{results: result})
+    case DataStore.all() do
+      {:ok, data} ->
+        shops = NearestShopsFinder.find(data, x, y)
+        json(conn, %{shops: shops})
+
+      {:error, reason} ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{error: reason})
+    end
   end
 
   defp parse_coords(%{"x" => x, "y" => y}) do
