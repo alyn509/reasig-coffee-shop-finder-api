@@ -32,7 +32,7 @@ defmodule CoffeeShopFinder.Data.DataStore do
     schedule_refresh()
 
     if state.shops == [] do
-      {:stop, :no_initial_data}
+      {:stop, :initial_data_load_failed}
     else
       schedule_refresh()
       {:ok, state}
