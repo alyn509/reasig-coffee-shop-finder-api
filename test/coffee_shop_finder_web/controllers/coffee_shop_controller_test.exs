@@ -1,14 +1,6 @@
 defmodule CoffeeShopFinderWeb.CoffeeShopControllerTest do
   use CoffeeShopFinderWeb.ConnCase, async: true
 
-  alias CoffeeShopFinder.Data.DataStore
-
-  setup do
-    # Ensure the DataStore has some shops for testing
-    DataStore.all()
-    :ok
-  end
-
   test "GET /coffee_shops returns nearby shops", %{conn: conn} do
     conn =
       get(conn, "/api/coffee-shops/nearest", %{

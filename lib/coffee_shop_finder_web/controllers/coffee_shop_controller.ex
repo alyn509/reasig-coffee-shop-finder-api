@@ -8,36 +8,28 @@ defmodule CoffeeShopFinderWeb.CoffeeShopController do
   Expects query params `x` and `y`.
   """
   def nearest(conn, params) do
-    case parse_coords(params) do
-      {:ok, x, y} ->
-        run_nearest(conn, x, y)
-
-      {:error, :missing_params} ->
+    with {:parse, {:ok, x, y}} <- {:parse, parse_coords(params)},
+         {:fetch, {:ok, shops}} <- {:fetch, DataStore.all()} do
+      json(conn, %{shops: NearestShopsFinder.find(shops, x, y)})
+    else
+      {:parse, {:error, :missing_params}} ->
         conn
         |> put_status(:bad_request)
         |> json(%{error: "Missing required query parameters: x and y"})
 
-      {:error, :invalid_coords} ->
+      {:parse, {:error, :invalid_coords}} ->
         conn
         |> put_status(:bad_request)
         |> json(%{error: "Coordinates are invalid or out of range"})
+
+      {:fetch, {:error, reason}} ->
+        conn
+        |> put_status(:service_unavailable)
+        |> json(%{error: reason})
     end
   end
 
   # Private helpers
-
-  defp run_nearest(conn, x, y) do
-    case DataStore.all() do
-      {:ok, data} ->
-        shops = NearestShopsFinder.find(data, x, y)
-        json(conn, %{shops: shops})
-
-      {:error, reason} ->
-        conn
-        |> put_status(:bad_request)
-        |> json(%{error: reason})
-    end
-  end
 
   defp parse_coords(%{"x" => x, "y" => y}) do
     with {:ok, x_val} <- CoordinateValidator.parse(x),
