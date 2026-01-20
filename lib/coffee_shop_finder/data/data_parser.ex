@@ -11,7 +11,6 @@ defmodule CoffeeShopFinder.Data.DataParser do
       rows
       |> Enum.reduce({MapSet.new(), []}, &dedupe_and_parse/2)
       |> elem(1)
-      |> Enum.reverse()
 
     if length(parsed) >= Constants.min_no_of_valid_shops() do
       {:ok, parsed}
