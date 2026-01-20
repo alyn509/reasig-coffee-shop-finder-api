@@ -4,8 +4,8 @@ defmodule CoffeeShopFinder.CoordinateValidatorTest do
   alias CoffeeShopFinder.Geo.CoordinateValidator
 
   test "valid coordinates pass" do
-    assert CoordinateValidator.parse(47.6)
-    assert CoordinateValidator.parse(-122.4)
+    assert {:ok, _} = CoordinateValidator.parse(47.6)
+    assert {:ok, _} = CoordinateValidator.parse(-122.4)
   end
 
   test "invalid coordinates fail" do
