@@ -90,6 +90,6 @@ mix test
 
 ### Notes
 
-- Coffee shop data is loaded at startup and refreshed periodically in memory
+- `CoffeeShopFinder.Data.DataStore` keeps an in-memory list of shops with a TTL-based cache.
 - The application will fail fast on startup if `COFFEE_SHOPS_CSV_URL` is missing or invalid
 - CI is configured via GitHub Actions to run tests on each push and pull request
