@@ -33,19 +33,17 @@ defmodule CoffeeShopFinder.Data.DataStore do
 
   @impl true
   def handle_call(:all, _from, state) do
-    cond do
-      cache_valid?(state) ->
-        {:reply, {:ok, state.shops}, state}
+    if cache_valid?(state) do
+      {:reply, {:ok, state.shops}, state}
+    else
+      case load_shops() do
+        {:ok, new_state} ->
+          {:reply, {:ok, new_state.shops}, new_state}
 
-      true ->
-        case load_shops() do
-          {:ok, new_state} ->
-            {:reply, {:ok, new_state.shops}, new_state}
-
-          {:error, reason} ->
-            Logger.error("Cache refresh failed: #{inspect(reason)}")
-            {:reply, {:error, :service_unavailable}, state}
-        end
+        {:error, reason} ->
+          Logger.error("Cache refresh failed: #{inspect(reason)}")
+          {:reply, {:error, :service_unavailable}, state}
+      end
     end
   end
 
