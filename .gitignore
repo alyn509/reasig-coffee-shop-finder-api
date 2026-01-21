@@ -35,3 +35,5 @@ coffee_shop_finder-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Ignore environment variable files.
+.env

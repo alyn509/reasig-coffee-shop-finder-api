@@ -18,11 +18,11 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+config :phoenix, :sort_verified_routes_query_params, true
+config :phoenix_live_view, enable_expensive_runtime_checks: true
 
-# Enable helpful, but potentially expensive runtime checks
-config :phoenix_live_view,
-  enable_expensive_runtime_checks: true
+# Use the HTTP client mock
+config :coffee_shop_finder, :req_module, CoffeeShopFinder.HTTPClientMock
 
-# Sort query params output of verified routes for robust url comparisons
-config :phoenix,
-  sort_verified_routes_query_params: true
+# Optional: manual DataStore control in tests
+config :coffee_shop_finder, start_data_store: false

@@ -100,4 +100,10 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Req
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+
+  # Require CSV URL from environment (production-only secret)
+  # Fails immediately if missing
 end
+
+csv_url = System.fetch_env!("COFFEE_SHOPS_CSV_URL")
+config :coffee_shop_finder, :coffee_shops_csv_url, csv_url
