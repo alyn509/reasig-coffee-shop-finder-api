@@ -5,25 +5,22 @@ defmodule CoffeeShopFinder.Data.DataFetcher do
 
   require Logger
 
+  # Resolve the HTTP client at runtime so tests can swap it via config
+  defp http_client do
+    Application.get_env(:coffee_shop_finder, :req_module) ||
+      Application.get_env(:coffee_shop_finder, :http_client) ||
+      CoffeeShopFinder.HTTPClient.Req
+  end
+
   def fetch_csv do
     url = Application.get_env(:coffee_shop_finder, :coffee_shops_csv_url)
 
-    if is_nil(url) do
-      Logger.error("DataFetcher failed: CSV URL is not configured")
-      raise "Application misconfigured: remote data source unavailable."
-    end
-
-    case Req.get(url) do
+    case http_client().get(url) do
       {:ok, %Req.Response{status: 200, body: body}} ->
         {:ok, body}
 
-      {:ok, %Req.Response{status: status}} ->
-        Logger.error("CSV fetch failed with status #{status}")
-        {:error, {:error, status}}
-
       {:error, reason} ->
-        Logger.error("CSV fetch error: #{inspect(reason)}")
-        {:error, {:error, reason}}
+        {:error, reason}
     end
   end
 end

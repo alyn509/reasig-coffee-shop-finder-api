@@ -16,32 +16,37 @@ defmodule CoffeeShopFinder.Data.DataStore do
   end
 
   def all do
-    GenServer.call(__MODULE__, :all)
-  end
-
-  def refresh do
-    GenServer.cast(__MODULE__, :refresh)
+    try do
+      GenServer.call(__MODULE__, :all)
+    catch
+      :exit, {:noproc, _} ->
+        {:error, :service_unavailable}
+    end
   end
 
   # GenServer callbacks
 
   @impl true
   def init(_) do
-    # Load initial shops safely
-    state = load_shops()
-    schedule_refresh()
-
-    if state.shops == [] do
-      {:stop, :initial_data_load_failed}
-    else
-      schedule_refresh()
-      {:ok, state}
-    end
+    {:ok, %{shops: [], fetched_at: nil}}
   end
 
   @impl true
   def handle_call(:all, _from, state) do
-    {:reply, state.shops, state}
+    cond do
+      cache_valid?(state) ->
+        {:reply, {:ok, state.shops}, state}
+
+      true ->
+        case load_shops() do
+          {:ok, new_state} ->
+            {:reply, {:ok, new_state.shops}, new_state}
+
+          {:error, reason} ->
+            Logger.error("Cache refresh failed: #{inspect(reason)}")
+            {:reply, {:error, :service_unavailable}, state}
+        end
+    end
   end
 
   @impl true
@@ -49,7 +54,7 @@ defmodule CoffeeShopFinder.Data.DataStore do
     new_state =
       case load_shops() do
         # successful load
-        %{shops: shops} = s when shops != [] -> s
+        {:ok, %{shops: shops} = s} when shops != [] -> s
         # keep old data if refresh fails
         _ -> state
       end
@@ -58,27 +63,41 @@ defmodule CoffeeShopFinder.Data.DataStore do
   end
 
   @impl true
+  def handle_cast(:clear, _state) do
+    # Reset to an empty, valid state for the store
+    {:noreply, %{shops: [], fetched_at: nil}}
+  end
+
+  @impl true
   def handle_info(:refresh, state) do
-    handle_cast(:refresh, state)
-    schedule_refresh()
-    {:noreply, state}
+    new_state =
+      case load_shops() do
+        {:ok, s} -> s
+        _ -> state
+      end
+
+    {:noreply, new_state}
   end
 
   # Private helpers
 
-  defp schedule_refresh do
-    Process.send_after(self(), :refresh, Constants.refresh_interval())
+  defp cache_valid?(%{fetched_at: nil}), do: false
+
+  defp cache_valid?(%{fetched_at: fetched_at}) do
+    DateTime.diff(DateTime.utc_now(), fetched_at) < Constants.ttl_seconds()
   end
 
   defp load_shops do
-    case DataFetcher.fetch_csv() do
-      {:ok, rows} ->
-        shops = DataParser.parse(rows)
-        %{shops: shops, last_updated_at: DateTime.utc_now()}
-
-      {:error, reason} ->
-        Logger.error("Failed to load shops: #{inspect(reason)}")
-        %{shops: [], last_updated_at: nil}
+    with {:ok, body} <- DataFetcher.fetch_csv(),
+         rows <- NimbleCSV.RFC4180.parse_string(body, skip_headers: true),
+         {:ok, shops} <- DataParser.parse(rows) do
+      {:ok,
+       %{
+         shops: shops,
+         fetched_at: DateTime.utc_now()
+       }}
+    else
+      {:error, reason} -> {:error, reason}
     end
   end
 end

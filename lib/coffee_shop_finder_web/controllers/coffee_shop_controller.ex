@@ -26,6 +26,11 @@ defmodule CoffeeShopFinderWeb.CoffeeShopController do
         conn
         |> put_status(:service_unavailable)
         |> json(%{error: reason})
+
+      _ ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{error: "Invalid coordinates"})
     end
   end
 
