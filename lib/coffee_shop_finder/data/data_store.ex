@@ -1,6 +1,7 @@
 defmodule CoffeeShopFinder.Data.DataStore do
   @moduledoc """
-  In-memory store for coffee shop data and sets up a periodic refresh.
+  In-memory store for coffee shop data. Data is refreshed lazily on demand
+  (TTL-based cache) and can be cleared via the public API.
   """
   use GenServer
 
@@ -48,33 +49,9 @@ defmodule CoffeeShopFinder.Data.DataStore do
   end
 
   @impl true
-  def handle_cast(:refresh, state) do
-    new_state =
-      case load_shops() do
-        # successful load
-        {:ok, %{shops: shops} = s} when shops != [] -> s
-        # keep old data if refresh fails
-        _ -> state
-      end
-
-    {:noreply, new_state}
-  end
-
-  @impl true
   def handle_cast(:clear, _state) do
     # Reset to an empty, valid state for the store
     {:noreply, %{shops: [], fetched_at: nil}}
-  end
-
-  @impl true
-  def handle_info(:refresh, state) do
-    new_state =
-      case load_shops() do
-        {:ok, s} -> s
-        _ -> state
-      end
-
-    {:noreply, new_state}
   end
 
   # Private helpers
